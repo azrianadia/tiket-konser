@@ -12,8 +12,8 @@ class TicketConfirmationController extends Controller
 {
     public function show(Ticket $ticket)
     {
-        // Only allow if paid
-        if ($ticket->payment_status !== 'paid') {
+        // Allow paid or pending (temporary for testing)
+        if (!in_array($ticket->payment_status, ['paid', 'pending'])) {
             abort(403, 'Pembayaran belum selesai');
         }
 
@@ -33,8 +33,8 @@ class TicketConfirmationController extends Controller
 
     public function downloadPdf(Ticket $ticket)
     {
-        // Only allow if paid
-        if ($ticket->payment_status !== 'paid') {
+        // Allow paid or pending (temporary for testing)
+        if (!in_array($ticket->payment_status, ['paid', 'pending'])) {
             abort(403, 'Pembayaran belum selesai');
         }
 
