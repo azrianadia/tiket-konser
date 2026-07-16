@@ -11,5 +11,5 @@ class Ticket extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['name', 'phone', 'email', 'seat_category', 'price'];
+    protected $fillable = ['id', 'name', 'phone', 'email', 'seat_category', 'price', 'payment_status', 'paid_at', 'snap_token', 'qr_code_path'];
 }

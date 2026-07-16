@@ -177,30 +177,46 @@
                 </div>
             @endif
 
+            @if(session('error'))
+                <div class="alert alert-error" style="background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-error" style="background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="registration-box">
                 <form action="{{ route('ticket.store') }}" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="name">Nama Lengkap</label>
-                        <input type="text" name="name" id="name" required placeholder="Sesuai KTP/Identitas">
+                        <input type="text" name="name" id="name" required placeholder="Sesuai KTP/Identitas" value="{{ old('name') }}">
                     </div>
                     <div class="form-group">
                         <label for="phone">Nomor Telepon / WhatsApp</label>
-                        <input type="text" name="phone" id="phone" required placeholder="Contoh: 08123456789">
+                        <input type="text" name="phone" id="phone" required placeholder="Contoh: 08123456789" value="{{ old('phone') }}">
                     </div>
                     <div class="form-group">
                         <label for="email">Alamat Email</label>
-                        <input type="email" name="email" id="email" required placeholder="nama@email.com">
+                        <input type="email" name="email" id="email" required placeholder="nama@email.com" value="{{ old('email') }}">
                     </div>
                     <div class="form-group">
                         <label for="seat_category">Kategori Tempat Duduk</label>
                         <select name="seat_category" id="seat_category" required onchange="syncCards(this.value)">
                             <option value="">-- Pilih Kategori --</option>
-                            <option value="VIP">VIP (Rp500.000)</option>
-                            <option value="Bawah Panggung">Bawah Panggung (Rp350.000)</option>
-                            <option value="Di Tengah">Di Tengah (Rp200.000)</option>
-                            <option value="Reguler Kanan">Reguler Kanan (Rp150.000)</option>
-                            <option value="Reguler Kiri">Reguler Kiri (Rp150.000)</option>
+                            <option value="VIP" {{ old('seat_category') == 'VIP' ? 'selected' : '' }}>VIP (Rp500.000)</option>
+                            <option value="Bawah Panggung" {{ old('seat_category') == 'Bawah Panggung' ? 'selected' : '' }}>Bawah Panggung (Rp350.000)</option>
+                            <option value="Di Tengah" {{ old('seat_category') == 'Di Tengah' ? 'selected' : '' }}>Di Tengah (Rp200.000)</option>
+                            <option value="Reguler Kanan" {{ old('seat_category') == 'Reguler Kanan' ? 'selected' : '' }}>Reguler Kanan (Rp150.000)</option>
+                            <option value="Reguler Kiri" {{ old('seat_category') == 'Reguler Kiri' ? 'selected' : '' }}>Reguler Kiri (Rp150.000)</option>
                         </select>
                     </div>
                     <button type="submit" class="submit-btn">Lanjut ke Pembayaran</button>

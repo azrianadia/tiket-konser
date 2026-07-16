@@ -9,7 +9,7 @@ use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
-    public function show(Ticket $ticket)
+    public function confirm(Ticket $ticket)
     {
         // Ensure ticket is not already paid
         if ($ticket->payment_status === 'paid') {
@@ -18,11 +18,11 @@ class CheckoutController extends Controller
         }
 
         // Configure Midtrans
-        Config::$serverKey = config('services.midtrans.server_key');
-        Config::$clientKey = config('services.midtrans.client_key');
-        Config::$isProduction = config('services.midtrans.is_production', false);
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        \Midtrans\Config::$serverKey = config('services.midtrans.server_key');
+        \Midtrans\Config::$clientKey = config('services.midtrans.client_key');
+        \Midtrans\Config::$isProduction = config('services.midtrans.is_production', false);
+        \Midtrans\Config::$isSanitized = true;
+        \Midtrans\Config::$is3ds = true;
 
         // Build payload
         $payload = [
@@ -47,7 +47,7 @@ class CheckoutController extends Controller
         ];
 
         try {
-            $snapToken = Snap::getSnapToken($payload);
+            $snapToken = \Midtrans\Snap::getSnapToken($payload);
             
             // Store snap_token for reference
             $ticket->update(['snap_token' => $snapToken]);
@@ -56,6 +56,6 @@ class CheckoutController extends Controller
             return back()->with('error', 'Gagal membuat token pembayaran: ' . $e->getMessage());
         }
 
-        return view('checkout', compact('ticket', 'snapToken'));
+        return view('checkout_confirm', compact('ticket', 'snapToken'));
     }
 }

@@ -36,6 +36,7 @@ class TicketController extends Controller
             'price' => $price,
         ]);
 
-        return back()->with('success', 'Pendaftaran berhasil! ID Tiket Anda: ' . $ticket->id);
+        return redirect()->signedRoute('checkout.confirm', $ticket)
+            ->with('info', 'Silakan periksa detail pesanan sebelum membayar.');
     }
 }
